@@ -6,7 +6,7 @@ A full-stack family subscription management application built with modern web te
 
 This is a monorepo containing:
 
-- **Client App** (`apps/client`) - Nuxt 3 frontend with PWA support
+- **web App** (`apps/web`) - Nuxt 3 frontend with PWA support
 - **Admin Dashboard** (`apps/admin`) - Nuxt 3 admin panel with Shadcn components
 - **API** (`apps/api`) - NestJS backend with PostgreSQL
 - **Shared Packages** (`packages/`) - Common types, UI components, and utilities
@@ -53,7 +53,7 @@ pnpm dev
 ```
 
 This will start:
-- Client app on `http://localhost:3000`
+- web app on `http://localhost:3000`
 - Admin dashboard on `http://localhost:3001`
 - API on `http://localhost:4000`
 
@@ -86,8 +86,8 @@ pnpm typecheck  # Type checking
 ### Individual App Development
 
 ```bash
-# Client app only
-turbo dev --filter=client
+# web app only
+turbo dev --filter=web
 
 # Admin dashboard only
 turbo dev --filter=admin
@@ -145,7 +145,7 @@ cd apps/api && pnpm test:watch
 - **TypeScript** - Type-safe JavaScript
 - **Pinia** - State management
 - **TanStack Query** - Data fetching
-- **Nuxt UI** - Component library (client)
+- **Nuxt UI** - Component library (web)
 - **Shadcn Vue + UnoCSS** - Components (admin)
 
 ### Backend
@@ -179,7 +179,7 @@ The API includes Sentry integration and sourcemap uploading configured in the bu
 ```
 famsub/
 ├── apps/
-│   ├── client/          # Nuxt 3 client app
+│   ├── web/             # Nuxt 3 web app
 │   ├── admin/           # Nuxt 3 admin dashboard
 │   └── api/             # NestJS API
 ├── packages/

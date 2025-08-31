@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@famsub/tsconfig": "workspace:*",
-    "vue": "^4.3.4",
+    "vue": "^3.5.17",
     "eslint": "^9.34.0",
     "typescript": "5.9.2"
   }

@@ -16,9 +16,9 @@ dev: ## Start all applications in development mode
 	@echo "🚀 Starting development servers..."
 	pnpm dev
 
-dev-client: ## Start only client application
-	@echo "🚀 Starting client app..."
-	turbo dev --filter=client
+dev-web: ## Start only web application
+	@echo "🚀 Starting web app..."
+	turbo dev --filter=web
 
 dev-admin: ## Start only admin application
 	@echo "🚀 Starting admin dashboard..."
@@ -33,8 +33,8 @@ build: ## Build all applications
 	@echo "🏗️  Building all applications..."
 	pnpm build
 
-build-client: ## Build only client application
-	turbo build --filter=client
+build-web: ## Build only web application
+	turbo build --filter=web
 
 build-admin: ## Build only admin application
 	turbo build --filter=admin
@@ -66,7 +66,7 @@ lint: ## Lint all code
 
 lint-fix: ## Fix linting issues
 	@echo "🔧 Fixing lint issues..."
-	cd apps/client && pnpm lint:fix
+	cd apps/web && pnpm lint:fix
 	cd apps/admin && pnpm format
 
 typecheck: ## Type check all applications

@@ -35,7 +35,7 @@ For app-specific development, use turbo filters:
 
 ```bash
 # Run specific app
-turbo dev --filter=client
+turbo dev --filter=web
 turbo dev --filter=admin  
 turbo dev --filter=api
 
@@ -67,7 +67,7 @@ cd apps/api && pnpm test:cov
 This is a full-stack application with three main apps and shared packages:
 
 ### Apps Structure
-- **`apps/client/`** - Nuxt 3 frontend application with PWA support
+- **`apps/web/`** - Nuxt 3 frontend application with PWA support
   - Uses Vue 3, Pinia for state management
   - TanStack Query for data fetching
   - Nuxt UI component library
@@ -96,7 +96,7 @@ This is a full-stack application with three main apps and shared packages:
 - **Monorepo**: pnpm workspace + Turbo for build orchestration
 - **Frontend**: Nuxt 3, Vue 3, TypeScript
 - **Backend**: NestJS, TypeORM, PostgreSQL
-- **Styling**: UnoCSS (admin), Nuxt UI (client)
+- **Styling**: UnoCSS (admin), Nuxt UI (web)
 - **State**: Pinia for Vue apps
 - **Database**: PostgresSQL with Docker setup
 - **Package Manager**: pnpm (required for workspace resolution)
