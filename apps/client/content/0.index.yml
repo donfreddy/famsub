@@ -1,0 +1,13 @@
+title: Partagez le prix de vos abonnements
+description: Économisez sur vos abonnements en rejoignant la plus grande communauté de co-abonnement.
+seo:
+  title: Famsub - Partagez le prix de vos abonnements
+  description: Économisez sur vos abonnements en rejoignant la plus grande communauté de co-abonnement.
+navigation: false
+features:
+  - text: Connectez et partagez vos abonnements en sécurité.
+    icon: 'i-uil-shield'
+  - text: "Confidentialité garantie : infos perso et paiement protégées."
+    icon: 'i-heroicons-lock-closed'
+  - text: Gestion des paiements simplifiée et automatique.
+    icon: 'i-uil-wallet'

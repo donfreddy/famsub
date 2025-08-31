@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+}
+
+@source "../../../content";
+
+html, body {
+  scroll-behavior: smooth;
+}
+
+
+.landing-grid {
+  background-size: 4rem 4rem;
+  background-image: linear-gradient(to right, #e4e4e7 1px, transparent 1px),
+  linear-gradient(to bottom, #e4e4e7 1px, transparent 1px);
+}
+
+.dark {
+  .landing-grid {
+    background-image: linear-gradient(to right, #27272a 1px, transparent 1px),
+    linear-gradient(to bottom, #27272a 1px, transparent 1px);
+  }
+}

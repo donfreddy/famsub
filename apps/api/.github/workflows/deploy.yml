@@ -1,0 +1,179 @@
+name: Deploy to dev server
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for proper versioning
+
+      - name: 🔄 Setup Docker layer caching
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: 📄 Create .env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: 🏷️ Generate version information
+        id: version
+        run: |
+          # Get short SHA
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "sha_short=${SHORT_SHA}" >> $GITHUB_OUTPUT
+          
+          # Get commit count for additional versioning info
+          COMMIT_COUNT=$(git rev-list --count HEAD)
+          echo "commit_count=${COMMIT_COUNT}" >> $GITHUB_OUTPUT
+          
+          # Get branch name in a safe format
+          BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | sed 's/[^a-zA-Z0-9]/-/g')
+          echo "branch=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+          
+          # Get timestamp for versioning
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
+          
+          # Create version tag
+          VERSION_TAG="${BRANCH_NAME}-${SHORT_SHA}-${TIMESTAMP}"
+          echo "version_tag=${VERSION_TAG}" >> $GITHUB_OUTPUT
+          
+          # Log versioning info
+          echo "Generated version tag: ${VERSION_TAG}"
+          echo "Commit SHA: ${SHORT_SHA}"
+          echo "Commit count: ${COMMIT_COUNT}"
+
+      - name: 🐳 Build and push Docker image
+        uses: docker/build-push-action@v6
+        timeout-minutes: 10
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ secrets.GHCR_USERNAME }}/famsub-api:latest
+            ghcr.io/${{ secrets.GHCR_USERNAME }}/famsub-api:${{ steps.version.outputs.sha_short }}
+            ghcr.io/${{ secrets.GHCR_USERNAME }}/famsub-api:${{ steps.version.outputs.version_tag }}
+          build-args: |
+            GIT_COMMIT=${{ github.sha }}
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            VERSION=${{ steps.version.outputs.version_tag }}
+          labels: |
+            org.opencontainers.image.created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ steps.version.outputs.version_tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: 🔄 Create deployment archive
+        run: |
+          # Only include necessary files for deployment
+          mkdir -p deploy
+          cp docker-compose.yml deploy/
+          cp .env deploy/
+          
+          # Create version file to track deployment
+          echo "version: ${{ steps.version.outputs.version_tag }}" > deploy/version.yaml
+          echo "commit: ${{ github.sha }}" >> deploy/version.yaml
+          echo "commit_short: ${{ steps.version.outputs.sha_short }}" >> deploy/version.yaml
+          echo "branch: ${{ steps.version.outputs.branch }}" >> deploy/version.yaml
+          echo "build_date: $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> deploy/version.yaml
+          
+          # Add any other essential files
+          tar -czf deploy.tar.gz -C deploy .
+
+      - name: 📤 Transfer deployment archive to VPS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "deploy.tar.gz"
+          target: "/var/www/api.dev.famsub.com"
+          strip_components: 0
+          timeout: 600s  # Increased timeout just in case
+
+      - name: 📤 Deploy to VPS
+        uses: appleboy/ssh-action@master
+        env:
+          API_KEY: GAMMUDiuY5a7WvyUNt9n3QztToSHzK7Uj
+        timeout-minutes: 10
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /var/www/api.dev.famsub.com
+            
+            # Extract deployment archive
+            tar -xzf deploy.tar.gz
+            rm deploy.tar.gz
+            
+            # Login to GitHub Container Registry
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
+            
+            # Cleanup old resources (keep it running until new deployment is ready)
+            docker system prune -f --volumes
+            
+            # Set the specific version to use
+            export IMAGE_VERSION="${{ steps.version.outputs.sha_short }}"
+            
+            # Update docker-compose file to use specific version
+            sed -i "s|image: ghcr.io/${{ secrets.GHCR_USERNAME }}/famsub-api:latest|image: ghcr.io/${{ secrets.GHCR_USERNAME }}/famsub-api:${IMAGE_VERSION}|g" docker-compose.yml
+            
+            # Pull the new image with retry logic
+            for i in 1 2 3; do
+              if docker pull ghcr.io/${{ secrets.GHCR_USERNAME }}/famsub-api:${IMAGE_VERSION}; then
+                break
+              fi
+              echo "Pull attempt $i failed. Retrying..."
+              sleep 10
+            done
+            
+            # Create a symlink for rollback purposes
+            echo "${IMAGE_VERSION}" > current-version
+            mkdir -p deployment-history
+            cp docker-compose.yml deployment-history/docker-compose-${IMAGE_VERSION}.yml
+            cp version.yaml deployment-history/version-${IMAGE_VERSION}.yaml
+            
+            # Deploy with minimal downtime
+            docker-compose down
+            docker-compose up -d
+            
+            # Wait for container to be healthy with proper timeout handling
+            echo "Waiting for application to be ready..."
+            for i in $(seq 1 60); do
+              if curl -s http://localhost:4000/health -H 'x-api-key:${API_KEY}' ; then
+                echo "Application is healthy!"
+                break
+              fi
+              echo "Waiting for application to be ready... ($i/60)"
+              sleep 5
+              if [ $i -eq 60 ]; then
+                echo "Health check timed out after 5 minutes"
+                docker-compose logs
+                exit 1
+              fi
+            done
+            
+            # Verify deployment
+            if ! docker-compose ps | grep -q "Up"; then
+              echo "Deployment verification failed"
+              exit 1
+            fi
+            
+            echo "Deployment successful!"
+            echo "Deployed version: ${IMAGE_VERSION}"
+            cat version.yaml

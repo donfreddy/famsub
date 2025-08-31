@@ -1,0 +1,56 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt  build",
+    "dev": "nuxt dev",
+    "dev:pwa": "VITE_PLUGIN_PWA=true nuxi dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "@nuxt/content": "^3.5.1",
+    "@nuxt/ui": "3.0.2",
+    "@pinia/nuxt": "0.9.0",
+    "@sentry/nuxt": "^9.1.0",
+    "@tanstack/vue-query": "^5.66.0",
+    "@tanstack/vue-query-devtools": "^5.66.0",
+    "@vercel/speed-insights": "^1.2.0",
+    "@vite-pwa/nuxt": "^1.0.0",
+    "axios": "1.8.2",
+    "date-fns": "^4.1.0",
+    "joi": "^17.13.3",
+    "moment": "^2.30.1",
+    "motion-v": "1.0.0-beta.2",
+    "nuxt": "3.16.0",
+    "pinia": "^2.3.0",
+    "posthog-js": "^1.217.0",
+    "swiper": "^11.2.4",
+    "ua-parser-js": "^2.0.2",
+    "vue": "3.5.13",
+    "vue-router": "4.5.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.12.0",
+    "@iconify-json/heroicons": "^1.2.2",
+    "@iconify-json/lucide": "^1.2.34",
+    "@iconify-json/solar": "^1.2.2",
+    "@iconify-json/uil": "^1.2.3",
+    "@nuxt/eslint": "^1.3.0",
+    "@vueuse/core": "^12.8.2",
+    "@vueuse/nuxt": "^13.1.0",
+    "eslint": "^9.25.1",
+    "eslint-plugin-format": "^1.0.1",
+    "typescript": "^5.7.3",
+    "vue-tsc": "^2.2.2"
+  },
+  "resolutions": {
+    "@vercel/nft": "^0.27.4"
+  },
+  "packageManager": "pnpm@10.7.0"
+}

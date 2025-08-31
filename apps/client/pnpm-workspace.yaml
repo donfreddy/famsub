@@ -1,0 +1,12 @@
+packages:
+  - .
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@sentry/cli'
+  - '@tailwindcss/oxide'
+  - '@vercel/speed-insights'
+  - better-sqlite3
+  - core-js
+  - esbuild
+  - unrs-resolver
+  - vue-demi
