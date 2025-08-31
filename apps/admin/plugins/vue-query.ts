@@ -2,7 +2,6 @@ import type {
   DehydratedState,
   VueQueryPluginOptions,
 } from '@tanstack/vue-query'
-import { defineNuxtPlugin } from '#app'
 import {
   dehydrate,
   hydrate,
@@ -17,8 +16,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     defaultOptions: {
       queries: {
         experimental_prefetchInRender: true,
-        staleTime: 1000 * 60 * 5, // 5 minutes cache
-        refetchOnWindowFocus: false, // Don't refetch when user switches tabs
+        staleTime: 1000 * 60 * 5, // 5-minute cache
+        refetchOnWindowFocus: false, // Don't refetch when a user switches tabs
       },
     },
   })

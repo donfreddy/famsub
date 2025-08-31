@@ -2,7 +2,7 @@
 
 # Default target
 help: ## Show this help message
-	@echo "FamSub Development Commands"
+	@echo "Famsub Development Commands"
 	@echo "=========================="
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -18,15 +18,15 @@ dev: ## Start all applications in development mode
 
 dev-web: ## Start only web application
 	@echo "🚀 Starting web app..."
-	turbo dev --filter=web
+	pnpm dev --filter=web
 
 dev-admin: ## Start only admin application
 	@echo "🚀 Starting admin dashboard..."
-	turbo dev --filter=admin
+	pnpm dev --filter=admin
 
 dev-api: ## Start only API application
 	@echo "🚀 Starting API server..."
-	turbo dev --filter=api
+	pnpm dev --filter=api
 
 # Build
 build: ## Build all applications
@@ -37,10 +37,10 @@ build-web: ## Build only web application
 	turbo build --filter=web
 
 build-admin: ## Build only admin application
-	turbo build --filter=admin
+	pnpm build --filter=admin
 
 build-api: ## Build only API application
-	turbo build --filter=api
+	pnpm build --filter=api
 
 # Testing
 test: ## Run all tests
@@ -113,6 +113,7 @@ clean: ## Clean dependencies and build artifacts
 	rm -rf apps/*/.output
 	rm -rf apps/*/dist
 	rm -rf packages/*/dist
+	rm -rf .turbo
 	@echo "✅ Cleanup complete!"
 
 clean-install: clean install ## Clean and reinstall dependencies
@@ -130,5 +131,5 @@ docker-logs: ## Show database container logs
 docker-exec: ## Execute bash in database container
 	docker exec -it postgres_famsub bash
 
-docker-psql: ## Connect to PostgreSQL in container
+docker-psql: ## Connect to PostgresSQL in container
 	docker exec -it postgres_famsub psql -U postgres -d famsub_db

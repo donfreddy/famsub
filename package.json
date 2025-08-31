@@ -18,12 +18,31 @@
   },
   "devDependencies": {
     "husky": "^9.1.7",
-    "turbo": "^2.5.5"
+    "turbo": "^2.5.6"
   },
   "pnpm": {
     "overrides": {
-      "vue-component-type-helpers": "3.0.1"
+      "vue-component-type-helpers": "3.0.1",
+      "uuid": "^9.0.0",
+      "core-js": "^3.37.0"
     },
-    "packageManager": "pnpm@10.13.1"
+    "packageManager": "pnpm@10.13.1",
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@parcel/watcher",
+      "@scarf/scarf",
+      "@sentry-internal/node-cpu-profiler",
+      "@sentry/cli",
+      "@sentry/profiling-node",
+      "@tailwindcss/oxide",
+      "@vercel/speed-insights",
+      "bcrypt",
+      "better-sqlite3",
+      "core-js",
+      "esbuild",
+      "maplibre-gl",
+      "unrs-resolver",
+      "vue-demi"
+    ]
   }
 }
