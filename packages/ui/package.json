@@ -1,0 +1,16 @@
+{
+  "name": "@famsub/ui",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@famsub/tsconfig": "workspace:*",
+    "vue": "^4.3.4",
+    "eslint": "^9.34.0",
+    "typescript": "5.9.2"
+  }
+}

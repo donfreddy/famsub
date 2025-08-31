@@ -1,0 +1,29 @@
+{
+  "name": "famsub",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev --parallel",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "start": "turbo run start --parallel",
+    "typecheck": "turbo run typecheck"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "resolutions": {
+    "unimport": "4.1.1"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "turbo": "^2.5.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "vue-component-type-helpers": "3.0.1"
+    },
+    "packageManager": "pnpm@10.13.1"
+  }
+}
