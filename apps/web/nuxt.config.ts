@@ -1,11 +1,11 @@
-import type {NuxtConfig} from "@nuxt/schema";
-import { resolve } from 'path'
-import process from "node:process";
+import type { NuxtConfig } from '@nuxt/schema'
+import { resolve } from 'node:path'
+import process from 'node:process'
 
 const scope: string = '/'
 const option = {
   appName: 'Famsub',
-  appDescription: 'Famsub est une application de gestion de portefeuille familial.',
+  appDescription: 'Famsub est une application de gestion de porte-feuille familial.',
 }
 
 export default defineNuxtConfig({
@@ -18,19 +18,19 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
     'motion-v/nuxt',
     '@vueuse/nuxt',
-    '@nuxt/eslint'
+    '@nuxt/eslint',
   ],
 
   // ✅ Nuxt Compatibility
   compatibilityDate: '2024-11-01',
   future: {
-    compatibilityVersion: 4
+    compatibilityVersion: 4,
   },
 
   srcDir: 'app/ui',
 
   // ✅ TypeScript et Devtools
-  devtools: {enabled: true},
+  devtools: { enabled: true },
   // typescript: {typeCheck: true},
 
   // ✅ App Meta / SEO
@@ -39,20 +39,20 @@ export default defineNuxtConfig({
       title: option.appName,
       titleTemplate: `%s - ${option.appName}`,
       meta: [
-        {charset: 'utf-8'},
-        {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-        {name: 'X-UA-Compatible', content: 'IE=edge, chrome=1'},
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'X-UA-Compatible', content: 'IE=edge, chrome=1' },
       ],
       link: [
-        {rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png'},
-        {rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png'},
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' },
       ],
     },
 
   },
 
   // ✅ CSS global
-  css: ['~/assets/css/main.css'],
+  css: ['~~/assets/css/main.css'],
 
   // ✅ Plugins
   plugins: ['~/plugins/vue-query.ts'],
@@ -65,7 +65,7 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_SITE_URL,
       siteEnv: process.env.NUXT_SITE_ENV,
       posthogPublicKey: 'phc_p45h0113LlTu3Sw8YelPfqWj6NH10TQ4PEQXx3b6V87',
-      posthogHost: 'https://eu.i.posthog.com'
+      posthogHost: 'https://eu.i.posthog.com',
     },
   },
 
@@ -73,7 +73,7 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'system',
     fallback: 'light',
-    classSuffix: ''
+    classSuffix: '',
   },
 
   // ✅ Nuxt Content
@@ -98,7 +98,7 @@ export default defineNuxtConfig({
       nuxt: {
         sortConfigKeys: true,
       },
-    }
+    },
   },
 
   // ✅ Config PWA
@@ -186,18 +186,18 @@ export default defineNuxtConfig({
     logLevel: 'info',
     server: {
       fs: {
-        strict: false
-      }
-    }
+        strict: false,
+      },
+    },
   },
 
   // ✅ Option expérimentale utile (améliore l’expérience dev parfois)
   experimental: {
-    inlineSSRStyles: false
+    inlineSSRStyles: false,
   },
 
   // ✅ Alias pour importer plus proprement
   alias: {
-    '@': resolve(__dirname)
-  }
-} as NuxtConfig);
+    '@': resolve(__dirname),
+  },
+} as NuxtConfig)

@@ -1,14 +1,14 @@
-import {LoginUseCase, LogoutUseCase, RegisterUseCase} from "~~/app/core/usecases/auth";
-import {useAuthQueries} from "~/api/useAuthQueries";
-import {GetCurrentUserUseCase} from "~~/app/core/usecases/user";
+import type { LoginUseCase, LogoutUseCase, RegisterUseCase } from '~~/app/core/usecases/auth'
+import type { GetCurrentUserUseCase } from '~~/app/core/usecases/user'
+import { useAuthQueries } from '~/api/useAuthQueries'
 
-export const useAuth = () => {
+export function useAuth() {
   const authStore = useAuthStore()
 
-  const loginUseCase = inject<LoginUseCase>('loginUseCase')!;
-  const registerUseCase = inject<RegisterUseCase>('registerUseCase')!;
-  const logoutUseCase = inject<LogoutUseCase>('logoutUseCase')!;
-  const getCurrentUserUseCase = inject<GetCurrentUserUseCase>('getCurrentUserUseCase')!;
+  const loginUseCase = inject<LoginUseCase>('loginUseCase')!
+  const registerUseCase = inject<RegisterUseCase>('registerUseCase')!
+  const logoutUseCase = inject<LogoutUseCase>('logoutUseCase')!
+  const getCurrentUserUseCase = inject<GetCurrentUserUseCase>('getCurrentUserUseCase')!
 
   const {
     useLogin,
@@ -18,8 +18,8 @@ export const useAuth = () => {
     loginUseCase,
     registerUseCase,
     logoutUseCase,
-    getCurrentUserUseCase
-  );
+    getCurrentUserUseCase,
+  )
 
   return {
     // Store state

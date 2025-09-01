@@ -2,7 +2,7 @@ export default defineAppConfig({
   ui: {
     colors: {
       primary: 'orange',
-      neutral: 'zinc'
+      neutral: 'zinc',
     },
     button: {
       slots: {
@@ -11,7 +11,7 @@ export default defineAppConfig({
     },
     icons: {
       loading: 'i-lucide-loader',
-    }
+    },
   },
   toaster: {
     position: 'top-right' as const,

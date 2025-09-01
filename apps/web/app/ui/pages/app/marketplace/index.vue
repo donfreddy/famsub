@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ServiceCardSkeleton from '~/components/smart/ServiceCardSkeleton.vue';
+import ServiceCardSkeleton from '~~/components/smart/ServiceCardSkeleton.vue';
 
 const { useServicesForMarketplace } = useService();
 const { useCategories } = useCategory();

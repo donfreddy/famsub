@@ -1,73 +1,42 @@
 <script setup lang="ts">
-import { Sonner } from '@/components/ui/sonner'
-// import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
-import { ConfigProvider } from 'radix-vue'
-
 const colorMode = useColorMode()
 
-const color = computed(() => colorMode.value === 'dark' ? '#09090b' : '#ffffff')
-
-const { theme, radius } = useCustomize()
+const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white')
 
 useHead({
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { key: 'theme-color', name: 'theme-color', content: color },
+    { key: 'theme-color', name: 'theme-color', content: color }
   ],
   link: [
-    { rel: 'icon', href: '/favicon.ico' },
+    { rel: 'icon', href: '/favicon.ico' }
   ],
   htmlAttrs: {
-    lang: 'en',
-  },
-  bodyAttrs: {
-    class: computed(() => `theme-${theme.value}`),
-    style: computed(() => `--radius: ${radius.value}rem;`),
-  },
+    lang: 'en'
+  }
 })
 
-const title = 'Famsub - Dashboard'
-const description = 'This is a dashboard built with Nuxt 3 and Shadcn UI.'
+const title = 'Nuxt Dashboard Template'
+const description = 'A professional dashboard template built with Nuxt UI Pro, featuring multiple pages, data visualization, and comprehensive management capabilities for creating powerful admin interfaces.'
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-  ogUrl: 'https://admin.famsub.com',
-  ogImage: 'https://nuxt-shadcn-dashboard.vercel.app/social-card.png',
-  twitterTitle: title,
-  twitterDescription: description,
-  twitterImage: 'https://nuxt-shadcn-dashboard.vercel.app/social-card.png',
-  twitterCard: 'summary_large_image',
+  ogImage: 'https://assets.hub.nuxt.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2Rhc2hib2FyZC10ZW1wbGF0ZS5udXh0LmRldiIsImlhdCI6MTczOTQ2MzU2N30._VElt4uvLjvAMdnTLytCInOajMElzWDKbmvOaMZhZUI.jpg?theme=light',
+  twitterImage: 'https://assets.hub.nuxt.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2Rhc2hib2FyZC10ZW1wbGF0ZS5udXh0LmRldiIsImlhdCI6MTczOTQ2MzU2N30._VElt4uvLjvAMdnTLytCInOajMElzWDKbmvOaMZhZUI.jpg?theme=light',
+  twitterCard: 'summary_large_image'
 })
-
-const router = useRouter()
-
-defineShortcuts({
-  'G-H': () => router.push('/'),
-  'G-E': () => router.push('/email'),
-})
-
-const useIdFunction = () => useId()
-
-const textDirection = useTextDirection({ initialValue: 'ltr' })
-const dir = computed(() => textDirection.value === 'rtl' ? 'rtl' : 'ltr')
 </script>
 
 <template>
-  <ConfigProvider :use-id="useIdFunction" :dir="dir">
-    <div vaul-drawer-wrapper class="relative">
-      <NuxtLoadingIndicator />
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
+  <UApp>
+    <NuxtLoadingIndicator />
 
-      <AppSettings />
-    </div>
-
-    <Toaster />
-    <Sonner class="pointer-events-auto" />
-  </ConfigProvider>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
 </template>

@@ -1,57 +1,49 @@
-/* eslint-disable node/prefer-global/process */
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
-  devtools: { enabled: true },
-
   modules: [
-    '@unocss/nuxt',
-    'shadcn-nuxt',
-    '@vueuse/nuxt',
     '@nuxt/eslint',
-    '@nuxt/icon',
-    '@pinia/nuxt',
-    '@nuxtjs/color-mode',
+    '@nuxt/ui',
+    '@vueuse/nuxt'
   ],
 
-  css: [
-    '@unocss/reset/tailwind.css',
-  ],
-
-  plugins: ['~/plugins/vue-query.ts'],
-
-  colorMode: {
-    classSuffix: '',
+  devtools: {
+    enabled: true
   },
 
-  features: {
-    // For UnoCSS
-    inlineStyles: false,
+  app: {
+    head: {
+      title: 'Admin Dashboard',
+      titleTemplate: '%s - Admin Dashboard',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'X-UA-Compatible', content: 'IE=edge, chrome=1' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' }
+      ]
+    }
   },
+
+  css: ['@/assets/css/main.css'],
+
+  srcDir: 'app/ui',
+
+  routeRules: {
+    '/api/**': {
+      cors: true
+    }
+  },
+
+  compatibilityDate: '2024-07-11',
 
   eslint: {
     config: {
-      standalone: false,
-    },
-  },
-
-  routeRules: {
-    '/settings': { redirect: '/settings/profile' },
-  },
-
-  imports: {
-    dirs: [
-      './lib',
-    ],
-  },
-
-  runtimeConfig: {
-    public: {
-      apiKey: process.env.NUXT_API_KEY,
-      apiBaseUrl: process.env.NUXT_API_BASE_URL,
-    },
-  },
-
-  compatibilityDate: '2024-12-14',
+      stylistic: {
+        commaDangle: 'never',
+        braceStyle: '1tbs'
+      }
+    }
+  }
 })
