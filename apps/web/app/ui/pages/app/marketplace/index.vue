@@ -1,80 +1,85 @@
 <script setup lang="ts">
-import ServiceCardSkeleton from '~~/components/smart/ServiceCardSkeleton.vue';
+import ServiceCardSkeleton from '~/components/smart/ServiceCardSkeleton.vue'
 
-const { useServicesForMarketplace } = useService();
-const { useCategories } = useCategory();
+const { useServicesForMarketplace } = useService()
+const { useCategories } = useCategory()
 
-const { data: services, isLoading: servicesLoading, error: serviceError } = useServicesForMarketplace();
-const { data: categories, isLoading: categoriesLoading } = useCategories();
+const { data: services, isLoading: servicesLoading, error: serviceError } = useServicesForMarketplace()
+const { data: categories, isLoading: categoriesLoading } = useCategories()
 
-const selectedCategory = ref<number | null>(null);
-const searchQuery = ref<string>('');
+const selectedCategory = ref<number | null>(null)
+const searchQuery = ref<string>('')
 
-const searchServices = (servicesList: any[]) => {
-  if (!searchQuery.value.trim()) return servicesList;
+function searchServices(servicesList: any[]) {
+  if (!searchQuery.value.trim())
+    return servicesList
 
-  const query = searchQuery.value.toLowerCase().trim();
-  return servicesList.filter(service => {
-    const nameMatch = service.name?.toLowerCase().includes(query);
-    const categoryMatch = service.category?.name?.toLowerCase().includes(query);
+  const query = searchQuery.value.toLowerCase().trim()
+  return servicesList.filter((service) => {
+    const nameMatch = service.name?.toLowerCase().includes(query)
+    const categoryMatch = service.category?.name?.toLowerCase().includes(query)
 
-    return nameMatch || categoryMatch;
-  });
-};
+    return nameMatch || categoryMatch
+  })
+}
 
-const filteredServices = (categoryId: number) => {
-  if (!services.value) return [];
-  const categoryServices = services.value.filter(service => service.category?.id === categoryId);
-  return searchServices(categoryServices);
-};
+function filteredServices(categoryId: number) {
+  if (!services.value)
+    return []
+  const categoryServices = services.value.filter(service => service.category?.id === categoryId)
+  return searchServices(categoryServices)
+}
 
-const getServicesForDisplay = () => {
-  if (!services.value) return [];
+function getServicesForDisplay() {
+  if (!services.value)
+    return []
 
-  let list = services.value;
+  let list = services.value
   if (selectedCategory.value !== null) {
-    list = list.filter(service => service.category?.id === selectedCategory.value);
+    list = list.filter(service => service.category?.id === selectedCategory.value)
   }
-  return searchServices(list);
-};
+  return searchServices(list)
+}
 
-const getCategoriesToDisplay = () => {
-  if (!categories.value) return [];
+function getCategoriesToDisplay() {
+  if (!categories.value)
+    return []
 
   if (selectedCategory.value === null) {
     if (searchQuery.value.trim()) {
-      return categories.value.filter(category => {
-        const categoryServices = filteredServices(category.id);
-        return categoryServices.length > 0;
-      });
+      return categories.value.filter((category) => {
+        const categoryServices = filteredServices(category.id)
+        return categoryServices.length > 0
+      })
     }
-    return categories.value;
-  } else {
-    const selectedCat = categories.value.find(cat => cat.id === selectedCategory.value);
-    if (selectedCat && filteredServices(selectedCat.id).length > 0) {
-      return [selectedCat];
-    }
-    return [];
+    return categories.value
   }
-};
+  else {
+    const selectedCat = categories.value.find(cat => cat.id === selectedCategory.value)
+    if (selectedCat && filteredServices(selectedCat.id).length > 0) {
+      return [selectedCat]
+    }
+    return []
+  }
+}
 
-const clearSearch = () => {
-  searchQuery.value = '';
-};
+function clearSearch() {
+  searchQuery.value = ''
+}
 
-const handleSearchInput = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  searchQuery.value = target.value;
-};
+function handleSearchInput(event: Event) {
+  const target = event.target as HTMLInputElement
+  searchQuery.value = target.value
+}
 
-const selectCategory = (categoryId: number | null) => {
-  selectedCategory.value = categoryId;
-};
+function selectCategory(categoryId: number | null) {
+  selectedCategory.value = categoryId
+}
 
 const links = [
-  { label: "Home", to: "/app" },
-  { label: "Explore", to: "/app/marketplace" },
-];
+  { label: 'Home', to: '/app' },
+  { label: 'Explore', to: '/app/marketplace' },
+]
 
 const items = ref([
   {
@@ -82,40 +87,40 @@ const items = ref([
     value: 'cm',
     avatar: {
       src: '/img/cameroon-flag.png',
-      alt: 'cameroun'
-    }
+      alt: 'cameroun',
+    },
   },
   {
     label: 'Gabon',
     value: 'ga',
     avatar: {
       src: '/img/gabon-flag.png',
-      alt: 'gabon'
-    }
+      alt: 'gabon',
+    },
   },
   {
     label: 'Nigeria',
     value: 'ng',
     avatar: {
       src: '/img/nigeria-flag.png',
-      alt: 'nigeria'
-    }
+      alt: 'nigeria',
+    },
   },
   {
     label: 'Senegal',
     value: 'ab',
     avatar: {
       src: '/img/senegal-flag.png',
-      alt: 'senegal'
-    }
+      alt: 'senegal',
+    },
   },
   {
-    label: "Cote d'ivoire",
+    label: 'Cote d\'ivoire',
     value: 'aa',
     avatar: {
       src: '/img/cote-d-ivoire-flag.png',
-      alt: 'cote-d-ivoire'
-    }
+      alt: 'cote-d-ivoire',
+    },
   },
 ])
 const value = ref(items.value[0]?.value)
@@ -131,39 +136,51 @@ const avatar = computed(() => items.value.find(item => item.value === value.valu
         <USkeleton class="h-28 w-[800px] mx-auto" />
       </div>
       <div v-else>
-        <h2 class="text-4xl font-bold mb-4">Share Subscriptions, Save Money</h2>
+        <h2 class="text-4xl font-bold mb-4">
+          Share Subscriptions, Save Money
+        </h2>
         <p class="text-xl  mb-8 max-w-2xl mx-auto">
           Join others to split the cost of your favorite subscriptions. Safe, secure, and simple.
         </p>
 
         <!-- Search Bar -->
         <div class="max-w-md mx-auto mb-6">
-          <UInput class="w-full" :model-value="searchQuery" @input="handleSearchInput" icon="i-lucide-search" size="lg"
-            variant="outline" placeholder="Search...">
+          <UInput
+            class="w-full" :model-value="searchQuery" icon="i-lucide-search" size="lg" variant="outline"
+            placeholder="Search..." @input="handleSearchInput"
+          >
             <template v-if="searchQuery" #trailing>
-              <UButton color="neutral" variant="link" size="sm" icon="i-lucide-x" aria-label="Clear search"
-                :aria-pressed="clearSearch" aria-controls="shearch" @click="clearSearch" />
+              <UButton
+                color="neutral" variant="link" size="sm" icon="i-lucide-x" aria-label="Clear search"
+                :aria-pressed="clearSearch" aria-controls="shearch" @click="clearSearch"
+              />
             </template>
           </UInput>
         </div>
 
         <div class="flex justify-center mb-8">
-          <USelect v-model="value" :items="items" selected-icon="i-lucide-map-pin-check-inside" value-key="value"
-            :avatar="avatar" class="w-48" />
+          <USelect
+            v-model="value" :items="items" selected-icon="i-lucide-map-pin-check-inside" value-key="value"
+            :avatar="avatar" class="w-48"
+          />
         </div>
 
         <!-- Category Filter -->
         <div class="flex flex-wrap gap-2 mb-8 justify-center">
           <!-- All Categories Button -->
-          <UBadge class="cursor-pointer px-6 rounded-full hover:bg-primary-500 hover:text-white transition-colors"
-            :variant="selectedCategory === null ? 'solid' : 'outline'" @click="selectCategory(null)">
+          <UBadge
+            class="cursor-pointer px-6 rounded-full hover:bg-primary-500 hover:text-white transition-colors"
+            :variant="selectedCategory === null ? 'solid' : 'outline'" @click="selectCategory(null)"
+          >
             All
           </UBadge>
 
           <!-- Individual Category Buttons -->
-          <UBadge v-for="category in categories" :key="category.id"
+          <UBadge
+            v-for="category in categories" :key="category.id"
             class="cursor-pointer px-6 rounded-full hover:bg-primary-500 hover:text-white transition-colors"
-            :variant="selectedCategory === category.id ? 'solid' : 'outline'" @click="selectCategory(category.id)">
+            :variant="selectedCategory === category.id ? 'solid' : 'outline'" @click="selectCategory(category.id)"
+          >
             {{ category.name }}
           </UBadge>
         </div>
@@ -184,7 +201,9 @@ const avatar = computed(() => items.value.find(item => item.value === value.valu
         <div class="text-gray-400 mb-4">
           <UIcon name="i-lucide-search-x" class="w-16 h-16 mx-auto" />
         </div>
-        <h3 class="text-lg font-medium mb-2">🤔 Aucun résultat trouvé</h3>
+        <h3 class="text-lg font-medium mb-2">
+          🤔 Aucun résultat trouvé
+        </h3>
         <p class="mb-4">
           N'hésitez pas à nous suggérer un nouveau service.
         </p>
@@ -213,7 +232,7 @@ const avatar = computed(() => items.value.find(item => item.value === value.valu
           <SmartServiceCard v-for="service in getServicesForDisplay()" :key="service.id" :service="service" />
         </div>
 
-        <div v-else v-for="category in getCategoriesToDisplay()" :key="category.id" class="py-6">
+        <div v-for="category in getCategoriesToDisplay()" v-else :key="category.id" class="py-6">
           <div v-if="filteredServices(category.id).length > 0" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <SmartServiceCard v-for="service in filteredServices(category.id)" :key="service.id" :service="service" />
           </div>
@@ -233,11 +252,15 @@ const avatar = computed(() => items.value.find(item => item.value === value.valu
 
       <!-- Show create offer or suggest service buttons -->
       <div class="space-x-4 py-16">
-        <UButton label="Proposer un abonnement" trailing color="primary" variant="outline" size="xl" to=""
-          class="font-medium border-1.5 border-primary-500 text-black dark:text-white rounded-full px-5 py-2.5 hover:bg-primary-500" />
+        <UButton
+          label="Proposer un abonnement" trailing color="primary" variant="outline" size="xl" to=""
+          class="font-medium border-1.5 border-primary-500 text-black dark:text-white rounded-full px-5 py-2.5 hover:bg-primary-500"
+        />
 
-        <UButton label="Suggérer un service" trailing color="primary" variant="outline" size="xl" to=""
-          class="font-medium border-1.5 border-primary-500 text-black dark:text-white rounded-full  px-5 py-2.5 hover:bg-primary-500" />
+        <UButton
+          label="Suggérer un service" trailing color="primary" variant="outline" size="xl" to=""
+          class="font-medium border-1.5 border-primary-500 text-black dark:text-white rounded-full  px-5 py-2.5 hover:bg-primary-500"
+        />
       </div>
     </div>
   </div>

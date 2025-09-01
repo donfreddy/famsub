@@ -52,7 +52,7 @@ export default defineNuxtConfig({
   },
 
   // ✅ CSS global
-  css: ['@/assets/css/main.css'],
+  css: ['~/assets/css/main.css'],
 
   // ✅ Plugins
   plugins: ['~/plugins/vue-query.ts'],

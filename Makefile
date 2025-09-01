@@ -42,6 +42,9 @@ build-admin: ## Build only admin application
 build-api: ## Build only API application
 	pnpm build --filter=api
 
+build-types: ## Build only API application
+	pnpm build --filter=types
+
 # Testing
 test: ## Run all tests
 	@echo "🧪 Running tests..."
