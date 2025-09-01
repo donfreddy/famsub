@@ -26,7 +26,6 @@
       "uuid": "^9.0.0",
       "core-js": "^3.37.0"
     },
-    "packageManager": "pnpm@10.13.1",
     "onlyBuiltDependencies": [
       "@nestjs/core",
       "@parcel/watcher",
@@ -44,5 +43,6 @@
       "unrs-resolver",
       "vue-demi"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.13.1"
 }
