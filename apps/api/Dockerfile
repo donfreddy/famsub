@@ -32,12 +32,8 @@ COPY --from=deps /app/packages ./packages
 COPY . .
 
 # Ensure Nest.js is available for this app
-RUN cd apps/"$APP_NAME" && \
-    echo "=== Checking Nest.js availability ===" && \
-    (../../node_modules/.bin/nest --version 2>/dev/null && echo "✅ Nest.js found in root" || \
-     ../node_modules/.bin/nest --version 2>/dev/null && echo "✅ Nest.js found in apps" || \
-     pnpm exec nest --version 2>/dev/null && echo "✅ Nest.js via pnpm exec" || \
-     (echo "❌ Nest.js not found, installing locally..." && pnpm add @nestjs/cli@latest))
+RUN cd apps/api && \
+    pnpm add @nestjs/cli@latest
 
 # Build app + deps avec Turbo
 RUN pnpm turbo build --filter=api
