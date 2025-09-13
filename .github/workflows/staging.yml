@@ -63,8 +63,7 @@ jobs:
             --platform linux/amd64 \
             -f ./apps/api/Dockerfile \
             -t $IMAGE_NAME:$SHORT_SHA \
-            -t $IMAGE_NAME:latest \
-            ./apps/api \
+            -t $IMAGE_NAME:latest . \
             --push
 
       - name: 📬 Notify Portainer of new image
