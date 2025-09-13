@@ -1,31 +1,61 @@
-# Here we are getting our node as Base image
-FROM node:20-alpine
+FROM node:18-alpine AS base
 
-# create user in the docker image
-USER node
+# Set pnpm
+RUN apk add --no-cache libc6-compat
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
-# Creating a new directory for app files and setting path in the container
-RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
+FROM base AS deps
+WORKDIR /app
 
-# setting working directory in the container
-WORKDIR /home/node/app
+# Copy monorepo config & lockfiles
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY .npmrc ./
 
-# grant permission of node project directory to node user
-COPY --chown=node:node . .
+# Copy package.json des apps/packages (pour résolution workspaces)
+COPY apps/api/package.json ./apps/api/
+COPY packages/*/package.json ./packages/
 
-# installing the dependencies into the container
-RUN yarn install
+# Simple install without trying to add extra packages
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-COPY docker-entrypoint.sh ./
+FROM base AS builder
+WORKDIR /app
 
-# grant permission to execute the entrypoint script
+# Copier deps + source
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build app + deps avec Turbo
+RUN pnpm turbo build --filter=api
+
+FROM node:18-alpine AS runner
+WORKDIR /app
+ARG PORT=4000
+
+ENV NODE_ENV=production
+ENV PORT=$PORT
+
+RUN addgroup -S nodejs && adduser -S nestjs -G nodejs
+
+# Copy build & runtime deps
+COPY --from=builder --chown=nestjs:nodejs /app/apps/api/dist ./dist
+COPY --from=builder --chown=nestjs:nodejs /app/apps/api/package.json ./package.json
+COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nestjs:nodejs /app/packages ./packages
+
+# Make entrypoint executable
 USER root
-RUN chmod +x docker-entrypoint.sh && \
-    apk add --no-cache netcat-openbsd
-USER node
+RUN if [ -f "./docker-entrypoint.sh" ]; then \
+      chmod +x docker-entrypoint.sh; \
+      echo "Entrypoint script made executable"; \
+    else \
+      echo "No entrypoint script found"; \
+    fi
 
-# container exposed network port number
-EXPOSE 4000
+USER nestjs
+EXPOSE $PORT
 
-# command to run within the container
+# Start the application
 CMD ["./docker-entrypoint.sh"]
