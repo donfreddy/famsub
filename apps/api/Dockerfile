@@ -53,6 +53,9 @@ COPY --from=builder --chown=nestjs:nodejs /app/apps/api/package.json ./package.j
 COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/packages ./packages
 
+# Copy entrypoint script if it exists
+COPY --from=builder /app/apps/api/docker-entrypoint.sh ./docker-entrypoint.sh
+
 # Make entrypoint executable
 USER root
 RUN if [ -f "./docker-entrypoint.sh" ]; then \
