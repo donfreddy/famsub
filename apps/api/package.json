@@ -1,12 +1,9 @@
 {
-  "name": "jointly-core",
+  "name": "api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build && yarn sentry:sourcemaps",
+    "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "feat:generate": "ts-node .templates/feature.generator.ts",
     "seed": "ts-node -r tsconfig-paths/register src/database/seed-runner.ts",
@@ -20,8 +17,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org famsub-team --project famsub-core ./dist && sentry-cli sourcemaps upload --org famsub-team --project famsub-core ./dist"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@faker-js/faker": "^10.0.0",
