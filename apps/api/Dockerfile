@@ -30,6 +30,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Install devDependencies (nest-cli, turbo, etc.) for build step
+RUN pnpm install --frozen-lockfile
+
 # Build app + deps avec Turbo
 RUN pnpm turbo build --filter=api
 
