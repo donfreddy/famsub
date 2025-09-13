@@ -7,8 +7,8 @@ services:
     ports:
       # This maps port from .env on the host to the same port number on the container.
       - '${APP_PORT}:${APP_PORT}'
-    depends_on:
-      - postgres
+    volumes:
+      - /opt/api/keys:/app/keys
     networks:
       - proxy
 

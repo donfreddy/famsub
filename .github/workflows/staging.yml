@@ -71,4 +71,4 @@ jobs:
           curl -X POST \
             -H "Content-Type: application/json" \
             -d '{"status": "success", "message": "Image successfully built and pushed"}' \
-            https://portainer.famsub.com/api/webhooks/5d4931df-82ff-4b34-b2e9-9fbd1fed1090
+            https://portainer.famsub.com/api/webhooks/97045298-2e95-4668-ac55-892d5cd3dcd4

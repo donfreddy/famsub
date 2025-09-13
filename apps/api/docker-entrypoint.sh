@@ -1,22 +1,24 @@
 #!/bin/sh
 
-echo "Waiting for PostgresSQL to start..."
+echo "Starting Famsub API..."
+echo "Connecting to PostgresSQL database..."
 until nc -z -v -w30 postgres 5432
 do
   echo "Waiting for database connection..."
   sleep 5
 done
 
-yarn install
-yarn build
+# Run database migrations if they exist
+if [ -f "./package.json" ] && grep -q '"migration:run"' "./package.json"; then
+    echo "Running database migrations..."
+    pnpm run migration:run || echo "No migrations to run or migration failed (continuing...)"
+fi
 
-#if [ -f "$(pwd)/package.json" ] && cat "$(pwd)/package.json" | grep -q "migration:run"; then
-#  echo "Running migrations..."
-#  yarn migration:run
-#fi
+# Run database seeds if they exist
+if [ -f "./package.json" ] && grep -q '"seed"' "./package.json"; then
+    echo "Running database seeds..."
+    pnpm run seed || echo "No seeds to run or seeding failed (continuing...)"
+fi
 
-echo "Running seeds..."
-yarn seed
-
-echo "Starting the application..."
+echo "Starting the NestJS API application..."
 exec node  dist/src/main.js
