@@ -19,4 +19,4 @@ echo "Running seeds..."
 yarn seed
 
 echo "Starting the application..."
-exec node dist/main.js
+exec node  dist/src/main.js

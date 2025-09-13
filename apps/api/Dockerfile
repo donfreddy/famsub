@@ -9,6 +9,9 @@ RUN corepack enable
 FROM base AS deps
 WORKDIR /app
 
+# Install build dependencies for better-sqlite3
+RUN apk add python3 make g++ --no-cache
+
 # Copy monorepo config & lockfiles
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY .npmrc ./
