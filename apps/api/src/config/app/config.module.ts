@@ -15,7 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       load: [configuration],
       cache: true,
       validationSchema: Joi.object({
-        APP_ENV: Joi.string().valid('dev', 'prod').default('dev'),
+        APP_ENV: Joi.string().valid('dev',' staging', 'prod').default('dev'),
         APP_HOST: Joi.string().default('localhost'),
         APP_PORT: Joi.number().default(3000),
         APP_FALLBACK_LANGUAGE: Joi.string().default('en'),

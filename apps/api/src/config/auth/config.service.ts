@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 /**
- * Service dealing with auth config based operations.
+ * Service dealing with auth-config-based operations.
  *
  * @class
  */
 @Injectable()
 export class AuthConfigService {
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {}
 
   get publicKeyPath(): string {
     return this.configService.get<string>('auth.key.publicKeyPath');

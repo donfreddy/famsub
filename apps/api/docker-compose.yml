@@ -1,75 +1,17 @@
 services:
-  app:
-    # This defines the configuration options, including the context and dockerfile,
-    # that will be applied when Compose builds the application image.
-    build:
-      # This defines the build context for the image build — in this case, the current project directory.
-      context: .
-      # This specifies the Dockerfile in your current project directory as the file
-      dockerfile: Dockerfile
+  famsub_api:
     image: ghcr.io/donfreddy/famsub-api:${IMAGE_VERSION:-latest}
-    container_name: app
-    # This defines the restart policy. The default is no,
-    # but we have set the container to restart unless it is stopped.
+    container_name: famsub_api
     restart: unless-stopped
-    env_file: .env
+    env_file: stack.env # This is used to load environment variables in the portainer
     ports:
       # This maps port from .env on the host to the same port number on the container.
       - '${APP_PORT}:${APP_PORT}'
     depends_on:
       - postgres
     networks:
-      - famsub-network
-
-  postgres:
-    # To create this service, Compose will pull the postgres
-    image: postgres:latest
-    container_name: postgres_db
-    restart: unless-stopped
-    # This tells Compose that we would like to add environment variables
-    # from a file called .env, located in our build context.
-    env_file: .env
-    environment:
-      # POSTGRES_USER and POSTGRES_PASSWORD together create
-      # a user in the PostgreSQL database and ensure that authentication is enabled
-      # when the container starts. We have set POSTGRES_USER and POSTGRES_PASSWORD
-      # using the values from our .env file, which we pass to the db service using the env_file option.
-      - POSTGRES_USER=${POSTGRES_USERNAME}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DATABASE}
-    ports:
-      - '5432:5432'
-    volumes:
-      # The named volume db_data will persist the data stored in postgres’s default data directory, /var/lib/postgresql/data.
-      # This will ensure that you don’t lose data in cases where you stop or remove containers.
-      - db_data:/var/lib/postgresql/data
-    networks:
-      - famsub-network
-
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    restart: unless-stopped
-    env_file: .env
-    environment:
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - postgres
-    networks:
-      - famsub-network
-
-# Our top-level volumes key defines the volumes db_data.
-# When Docker creates volumes, the contents of the volume are stored in a part of the host filesystem, /var/lib/docker/volumes/, that’s managed by Docker.
-# The contents of each volume are stored in a directory under /var/lib/docker/volumes/ and get mounted to any container that uses the volume.
-# In this way, the data that our users will create will persist in the postgres_data volume even if we remove and recreate the db container.
-volumes:
-  db_data:
-  pgadmin_data:
+      - proxy
 
 networks:
-  famsub-network:
-    driver: bridge
+  proxy:
+    external: true
