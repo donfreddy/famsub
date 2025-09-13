@@ -1,6 +1,6 @@
 import { NullableType } from '../../../types/nullable.type';
-import { Offer } from '../entities/Offer.entity';
-import { CreateOfferDto } from '../dto/create-Offer.dto';
+import { Offer } from '../entities/offer.entity';
+import { CreateOfferDto } from '../dto/create-offer.dto';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { User } from '../../user/entities/user.entity';
 import { FindOptionsWhere } from 'typeorm';

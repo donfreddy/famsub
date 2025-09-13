@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as bodyParser from 'body-parser';
+import * as express from 'express';
 import * as Sentry from '@sentry/nestjs';
 import { swaggerSetup } from './swagger-setup';
 import { AppConfigService } from './config';
@@ -26,8 +26,8 @@ async function bootstrap() {
   app.getHttpAdapter().getInstance().disable('x-powered-by');
 
   // Increase the request body size limit (JSON and URL-encoded data)
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
   app.enableCors({
     origin: allowedOrigins,
