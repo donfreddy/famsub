@@ -24,6 +24,8 @@ COPY packages/*/package.json ./packages/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 FROM base AS builder
+
+RUN corepack enable
 WORKDIR /app
 
 # Copier deps + source
