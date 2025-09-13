@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "Starting Famsub API..."
 echo "Connecting to PostgresSQL database..."
@@ -19,9 +20,6 @@ if [ -f "./package.json" ] && grep -q '"seed"' "./package.json"; then
     echo "Running database seeds..."
     pnpm run seed || echo "No seeds to run or seeding failed (continuing...)"
 fi
-
-# Check if we have a built application
-ls -la ./dist/ 2>/dev/null || echo "❌ Directory ./dist/ not found"
 
 echo "Starting the NestJS API application..."
 exec node  dist/main.js

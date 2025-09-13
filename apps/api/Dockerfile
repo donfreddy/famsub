@@ -24,8 +24,6 @@ COPY packages/*/package.json ./packages/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 FROM base AS builder
-
-RUN corepack enable
 WORKDIR /app
 
 # Copier deps + source
@@ -47,7 +45,8 @@ ARG PORT=4000
 ENV NODE_ENV=production
 ENV PORT=$PORT
 
-RUN addgroup -S nodejs && adduser -S nestjs -G nodejs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nestjs
 
 # Copy build & runtime deps
 COPY --from=builder --chown=nestjs:nodejs /app/apps/api/dist ./dist
@@ -66,8 +65,8 @@ RUN if [ -f "./docker-entrypoint.sh" ]; then \
     else \
       echo "No entrypoint script found"; \
     fi
-
 USER nestjs
+
 EXPOSE $PORT
 
 # Start the application
