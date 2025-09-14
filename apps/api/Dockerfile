@@ -34,11 +34,6 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages ./packages
 COPY . .
 
-# Ensure Nest.js is available for this app
-WORKDIR /app/apps/api
-RUN pnpm add @nestjs/cli@latest
-WORKDIR /app
-
 # Build app + deps avec Turbo
 RUN pnpm turbo build --filter=api
 
