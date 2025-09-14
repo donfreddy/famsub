@@ -9,6 +9,11 @@ do
   sleep 5
 done
 
+# Check if we have a built application
+ls -la ./ 2>/dev/null || echo "❌ Directory ./ not found"
+ls -la ./dist/ 2>/dev/null || echo "❌ Directory ./dist/ not found"
+ls -la ./dist/src/ 2>/dev/null || echo "❌ Directory ./dist/src/ not found"
+
 # Run database migrations if they exist
 if [ -f "./package.json" ] && grep -q '"migration:run"' "./package.json"; then
     echo "Running database migrations..."
@@ -22,4 +27,4 @@ if [ -f "./package.json" ] && grep -q '"seed"' "./package.json"; then
 fi
 
 echo "Starting the NestJS API application..."
-exec node  dist/main.js
+exec node  dist/src/main.js
