@@ -27,4 +27,4 @@ if [ -f "./package.json" ] && grep -q '"seed"' "./package.json"; then
 fi
 
 echo "Starting the NestJS API application..."
-exec node  dist/src/main.js
+exec node  dist/main.js
