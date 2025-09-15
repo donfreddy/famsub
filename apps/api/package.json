@@ -6,7 +6,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "feat:generate": "ts-node .templates/feature.generator.ts",
-    "seed": "ts-node -r tsconfig-paths/register dist/database/seed-runner.ts",
+    "seed": "ts-node -r tsconfig-paths/register dist/database/seed-runner.js",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:dev:db": "./scripts/start-db.sh",
