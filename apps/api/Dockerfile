@@ -52,6 +52,7 @@ RUN addgroup --system --gid 1001 nodejs && \
 # Copy built NestJS application
 COPY --from=builder --chown=nestjs:nodejs /app/apps/api/dist ./dist
 COPY --from=builder --chown=nestjs:nodejs /app/apps/api/package.json ./package.json
+COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
 # Install only production dependencies
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
