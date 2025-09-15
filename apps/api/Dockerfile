@@ -62,9 +62,9 @@ COPY --from=builder --chown=nestjs:nodejs /app/packages ./packages
 COPY --from=builder /app/apps/api/docker-entrypoint.sh ./docker-entrypoint.sh
 
 # Make entrypoint executable
-#USER root
-#RUN if [ -f "./docker-entrypoint.sh" ]; then chmod +x docker-entrypoint.sh; fi
-#USER nestjs
+USER root
+RUN if [ -f "./docker-entrypoint.sh" ]; then chmod +x docker-entrypoint.sh; fi
+USER nestjs
 
 EXPOSE $PORT
 
