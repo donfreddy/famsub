@@ -69,5 +69,4 @@ USER nestjs
 EXPOSE $PORT
 
 # Start the application
-# CMD ["./docker-entrypoint.sh"]
-CMD ["node", "dist/main.js"]
+CMD ["./docker-entrypoint.sh"]

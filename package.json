@@ -33,7 +33,6 @@
       "@scarf/scarf",
       "@sentry-internal/node-cpu-profiler",
       "@sentry/cli",
-      "@sentry/profiling-node",
       "@tailwindcss/oxide",
       "@vercel/speed-insights",
       "bcrypt",
