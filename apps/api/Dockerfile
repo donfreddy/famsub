@@ -52,10 +52,8 @@ RUN addgroup --system --gid 1001 nodejs && \
 COPY --from=builder --chown=nestjs:nodejs /app/apps/api/dist ./dist
 COPY --from=builder --chown=nestjs:nodejs /app/apps/api/package.json ./package.json
 
-# Copy the complete node_modules from builder (includes all workspace deps)
+# Copy node_modules for runtime dependencies
 COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
-
-# Copy packages source (needed for runtime workspace resolution)
 COPY --from=builder --chown=nestjs:nodejs /app/packages ./packages
 
 # Copy entrypoint script if it exists

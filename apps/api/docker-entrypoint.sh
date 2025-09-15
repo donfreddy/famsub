@@ -27,10 +27,4 @@ if [ -f "./package.json" ] && grep -q '"seed"' "./package.json"; then
 fi
 
 echo "Starting the NestJS API application..."
-echo "Current working directory: $(pwd)"
-echo "Node modules available: $(ls -la node_modules/ | head -5)"
-echo "Dist contents: $(ls -la dist/)"
-
-# Change to the app directory and start the application
-cd /app
-exec node dist/main.js
+exec node dist/src/main.js

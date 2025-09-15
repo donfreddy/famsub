@@ -49,22 +49,23 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      - name: 🏷️ Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/famsub-api
+          tags: |
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
       - name: 🐳 Build and push Docker image
-        env:
-          IMAGE_NAME: ghcr.io/donfreddy/famsub-api
-          COMMIT_SHA: ${{ github.sha }}
-        run: |
-          # Get short SHA
-          SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
-          echo "Building and pushing image: $IMAGE_NAME:$SHORT_SHA and $IMAGE_NAME:latest"
-          
-          # Build and push image
-          docker buildx build \
-            --platform linux/amd64 \
-            -f ./apps/api/Dockerfile \
-            -t $IMAGE_NAME:$SHORT_SHA \
-            -t $IMAGE_NAME:latest . \
-            --push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       - name: 📬 Notify Portainer of new image
         run: |
