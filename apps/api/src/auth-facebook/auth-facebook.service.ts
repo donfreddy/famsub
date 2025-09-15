@@ -1,27 +1,24 @@
 import { HttpStatus, Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { Facebook } from 'fb';
+import fetch from 'node-fetch';
 import { AuthConfigService } from 'src/config';
 import { FacebookInterface, SocialInterface } from '../types';
 import { AuthFacebookLoginDto } from './dto/auth-facebook-login.dto';
 
 @Injectable()
 export class AuthFacebookService {
-  constructor(private authConfig: AuthConfigService) {}
+  constructor(private readonly authConfig: AuthConfigService) {}
 
   async getProfileByToken(loginDto: AuthFacebookLoginDto): Promise<SocialInterface> {
     try {
-      const fb = new Facebook({
-        appId: this.authConfig.facebookAppId,
-        appSecret: this.authConfig.facebookAppSecret,
-        version: 'v7.0',
-      });
-      fb.setAccessToken(loginDto.access_token);
+      const fields = 'id,last_name,email,first_name';
+      const url = `https://graph.facebook.com/v19.0/me?fields=${fields}&access_token=${loginDto.access_token}`;
 
-      const data: FacebookInterface = await new Promise((resolve: any) => {
-        fb.api('/me', 'get', { fields: 'id,last_name,email,first_name' }, (response) => {
-          resolve(response);
-        });
-      });
+      const response = await fetch(url);
+      const data: FacebookInterface & { error?: any } = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
 
       return {
         id: data.id,
@@ -30,6 +27,7 @@ export class AuthFacebookService {
         lastName: data.last_name,
       };
     } catch (error) {
+      console.log(error);
       throw new UnprocessableEntityException({
         status: HttpStatus.UNPROCESSABLE_ENTITY,
         errors: { user: 'wrongToken' },

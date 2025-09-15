@@ -26,7 +26,7 @@ dev-admin: ## Start only admin application
 
 dev-api: ## Start only API application
 	@echo "🚀 Starting API server..."
-	pnpm dev --filter=api
+	pnpm --filter=api start:dev
 
 # Build
 build: ## Build all applications

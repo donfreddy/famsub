@@ -24,8 +24,7 @@
   "pnpm": {
     "overrides": {
       "vue-component-type-helpers": "3.0.1",
-      "uuid": "^9.0.0",
-      "core-js": "^3.37.0"
+      "uuid": "^9.0.0"
     },
     "onlyBuiltDependencies": [
       "@nestjs/core",
@@ -37,7 +36,6 @@
       "@vercel/speed-insights",
       "bcrypt",
       "better-sqlite3",
-      "core-js",
       "esbuild",
       "maplibre-gl",
       "unrs-resolver",

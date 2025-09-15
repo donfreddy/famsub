@@ -24,8 +24,6 @@ import { AuthConfigService } from './config.service';
         TOKEN_AUDIENCE: Joi.string().default('xyz.com'),
         GOOGLE_CLIENT_ID: Joi.string().default('google-client-id'),
         GOOGLE_CLIENT_SECRET: Joi.string().default('google-client-secret'),
-        FACEBOOK_APP_ID: Joi.string().default('facebook-app-id'),
-        FACEBOOK_APP_SECRET: Joi.string().default('facebook-app-secret'),
       }),
     }),
   ],
