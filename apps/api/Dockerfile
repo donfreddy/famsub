@@ -21,11 +21,20 @@ COPY packages/*/package.json ./packages/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 FROM base AS builder
+WORKDIR /app
 
 # Copier deps + source
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages ./packages
 COPY . .
+
+# Ensure Nest.js is available for this app
+RUN cd apps/api && \
+    echo "=== Checking Nest.js availability ===" && \
+    (../../node_modules/.bin/nest --version 2>/dev/null && echo "✅ Nest.js found in root" || \
+     ../node_modules/.bin/nest --version 2>/dev/null && echo "✅ Nest.js found in apps" || \
+     pnpm exec nest --version 2>/dev/null && echo "✅ Nest.js via pnpm exec" || \
+     (echo "❌ Nest.js not found, installing locally..." && pnpm add @nestjs/cli@latest))
 
 # Build app + deps avec Turbo
 RUN pnpm turbo build --filter=api
