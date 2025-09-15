@@ -53,10 +53,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/famsub-api
+          images: ghcr.io/${{ github.repository }}/api
           tags: |
+            type=ref,event=branch
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
+            labels: |
+              org.opencontainers.image.title=Famsub API
+              org.opencontainers.image.description=Rest API for Famsub platform
+              org.opencontainers.image.url=https://famsub.com
 
       - name: 🐳 Build and push Docker image
         uses: docker/build-push-action@v6
