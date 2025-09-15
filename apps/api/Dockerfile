@@ -27,6 +27,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages ./packages
 COPY . .
 
+# Install only api dependencies (faster)
+RUN pnpm install --filter=api --frozen-lockfile
+
 # Build app + deps avec Turbo
 RUN pnpm turbo build --filter=api
 
