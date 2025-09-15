@@ -27,8 +27,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages ./packages
 COPY . .
 
-# Install only api dependencies (faster)
-RUN pnpm add @nestjs/cli@latest --filter=api
+# Ensure Nest.js is available for this app
+RUN cd apps/api && \
+    pnpm add @nestjs/cli@latest
 
 # Build app + deps avec Turbo
 RUN pnpm turbo build --filter=api
