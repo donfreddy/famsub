@@ -69,5 +69,4 @@ COPY --from=builder /app/apps/api/docker-entrypoint.sh ./docker-entrypoint.sh
 EXPOSE $PORT
 
 # Start the application
-# CMD ["./docker-entrypoint.sh"]
-CMD [ "node", "dist/main" ]
+CMD ["./docker-entrypoint.sh"]
