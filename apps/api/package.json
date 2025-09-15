@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "nest build",
+    "build": "npx nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "feat:generate": "ts-node .templates/feature.generator.ts",
     "seed": "ts-node -r tsconfig-paths/register src/database/seed-runner.ts",
