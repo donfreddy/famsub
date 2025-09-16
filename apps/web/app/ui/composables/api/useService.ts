@@ -1,4 +1,4 @@
-import { GetServicesUseCase, GetServicesForMarketplaceUseCase } from '~~/app/core/usecases/service'
+import { GetServicesUseCase, GetServicesForMarketplaceUseCase } from '@/app/core/usecases/service'
 import { useServiceQueries } from "~/api/useServiceQueries";
 
 export const useService = () => {

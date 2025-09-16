@@ -1,9 +1,9 @@
-import {useMutation, useQueryClient} from '@tanstack/vue-query'
-import {LoginUseCase, LogoutUseCase, RegisterUseCase} from '~~/app/core/usecases/auth'
-import {GetCurrentUserUseCase} from '~~/app/core/usecases/user'
-import type {ApiResponse, AuthResponse, LoginCredentials, RegisterCredentials} from '~~/app/core/entities'
-import {AxiosError} from 'axios'
-import {UserMapper} from "~~/app/data/mappers/UserMapper";
+import type { ApiResponse, AuthResponse, LoginCredentials, RegisterCredentials } from '~~/app/core/entities'
+import type { LoginUseCase, LogoutUseCase, RegisterUseCase } from '~~/app/core/usecases/auth'
+import type { GetCurrentUserUseCase } from '~~/app/core/usecases/user'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { AxiosError } from 'axios'
+import { UserMapper } from '~~/app/data/mappers/UserMapper'
 
 export function useAuthQueries(
   loginUseCase: LoginUseCase,
@@ -18,19 +18,19 @@ export function useAuthQueries(
   const toast = useToast()
 
   const handleSuccess = async (response: ApiResponse<AuthResponse>, successId: string) => {
-    const {data, message} = response
+    const { data, message } = response
     authStore.setTokens(data.tokens)
     authStore.setUser(userMapper.toDomain(data.user))
 
-    //await queryClient.invalidateQueries({queryKey: ['currentUser']})
+    // await queryClient.invalidateQueries({queryKey: ['currentUser']})
     await queryClient.fetchQuery({
       queryKey: ['currentUser'],
       queryFn: async () => {
         const res = await getCurrentUserUseCase.execute()
-        console.log("User fetched :", res.data)
+        console.log('User fetched :', res.data)
         authStore.setUser(userMapper.toDomain(res.data))
-        return res.data;
-      }
+        return res.data
+      },
     })
 
     const redirectPath = sessionStorage.getItem('redirectAfterLogin') || '/app'
@@ -42,13 +42,13 @@ export function useAuthQueries(
       title: message,
       color: 'success',
       icon: 'i-heroicons-check-circle',
-      duration: 3000
+      duration: 3000,
     })
   }
 
   const handleError = (error: unknown, errorId: string) => {
-    const errorMessage =
-      error instanceof AxiosError
+    const errorMessage
+      = error instanceof AxiosError
         ? error.response?.data?.message || 'An error has occurred'
         : 'Unknown error'
 
@@ -65,7 +65,7 @@ export function useAuthQueries(
       mutationKey: ['login'],
       mutationFn: (credentials: LoginCredentials) => loginUseCase.execute(credentials),
       onSuccess: (response: ApiResponse<AuthResponse>) => handleSuccess(response, 'login-success'),
-      onError: (error) => handleError(error, 'login-failed'),
+      onError: error => handleError(error, 'login-failed'),
     })
 
   const useRegister = () =>
@@ -73,7 +73,7 @@ export function useAuthQueries(
       mutationKey: ['register'],
       mutationFn: (data: RegisterCredentials) => registerUseCase.execute(data),
       onSuccess: (response: ApiResponse<AuthResponse>) => handleSuccess(response, 'register-success'),
-      onError: (error) => handleError(error, 'register-failed'),
+      onError: error => handleError(error, 'register-failed'),
     })
 
   const useLogout = () =>
@@ -83,9 +83,9 @@ export function useAuthQueries(
       onSuccess: async () => {
         authStore.logout()
         await router.push('/')
-        await queryClient.resetQueries({queryKey: ['currentUser']})
+        await queryClient.resetQueries({ queryKey: ['currentUser'] })
       },
-      onError: (error) => handleError(error, 'logout-failed'),
+      onError: error => handleError(error, 'logout-failed'),
     })
 
   return {

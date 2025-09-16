@@ -1,4 +1,4 @@
-import { GetOfferByIdUseCase, GetOffersByServiceUseCase } from '~~/app/core/usecases/offer'
+import { GetOfferByIdUseCase, GetOffersByServiceUseCase } from '@/app/core/usecases/offer'
 import { useOfferQueries } from "~/api/useOfferQueries";
 
 export const useOffer = () => {

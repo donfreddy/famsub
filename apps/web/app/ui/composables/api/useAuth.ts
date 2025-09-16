@@ -1,5 +1,5 @@
-import type { LoginUseCase, LogoutUseCase, RegisterUseCase } from '~~/app/core/usecases/auth'
-import type { GetCurrentUserUseCase } from '~~/app/core/usecases/user'
+import type { LoginUseCase, LogoutUseCase, RegisterUseCase } from '@/app/core/usecases/auth'
+import type { GetCurrentUserUseCase } from '@/app/core/usecases/user'
 import { useAuthQueries } from '~/api/useAuthQueries'
 
 export function useAuth() {

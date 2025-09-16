@@ -1,5 +1,5 @@
-import { GetCategoriesUseCase } from '~~/app/core/usecases/category'
-import { useCategoryQueries } from "~/api/useCategoryQueries";
+import type {GetCategoriesUseCase} from '@/app/core/usecases/category';
+import {useCategoryQueries} from "~/api/useCategoryQueries";
 
 export const useCategory = () => {
 

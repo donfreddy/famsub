@@ -1,5 +1,5 @@
-import axios, {type AxiosInstance, type AxiosResponse, type InternalAxiosRequestConfig} from "axios";
-
+import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
 export class HttpClientService {
   private readonly client: AxiosInstance
@@ -15,8 +15,8 @@ export class HttpClientService {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
-        ...(apiKey && {'x-api-key': apiKey}),
+        'Accept': 'application/json',
+        ...(apiKey && { 'x-api-key': apiKey }),
       },
     })
 
@@ -33,7 +33,8 @@ export class HttpClientService {
         }
         return config
       },
-      (error) => Promise.reject(error instanceof Error ? error : new Error(JSON.stringify(error))))
+      error => Promise.reject(error instanceof Error ? error : new Error(JSON.stringify(error))),
+    )
 
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
@@ -53,12 +54,13 @@ export class HttpClientService {
               const newAccessToken = await this.refreshToken()
               originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
               return this.client(originalRequest)
-            } catch (refreshError) {
+            }
+            catch (refreshError) {
               return Promise.reject(refreshError)
             }
           }
 
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             this.refreshSubscribers.push((token: string) => {
               originalRequest.headers.Authorization = `Bearer ${token}`
               resolve(this.client(originalRequest))
@@ -67,16 +69,16 @@ export class HttpClientService {
         }
 
         return Promise.reject(
-          error instanceof Error ? error : new Error(JSON.stringify(error))
+          error instanceof Error ? error : new Error(JSON.stringify(error)),
         )
-      }
+      },
     )
   }
 
   private async refreshToken(): Promise<string> {
-    const {tokens, logout, setTokens} = useAuthStore()
+    const { tokens, logout, setTokens } = useAuthStore()
     try {
-      const {data} = await this.client.post('/auth/token/refresh', {
+      const { data } = await this.client.post('/auth/token/refresh', {
         refreshToken: tokens?.refresh_token,
       })
 
@@ -90,12 +92,14 @@ export class HttpClientService {
       this.refreshSubscribers.forEach(cb => cb(data.accessToken))
       this.refreshSubscribers = []
       return data.accessToken
-    } catch (error) {
+    }
+    catch (error) {
       this.refreshFailed = true
       logout()
       navigateTo('/login')
       throw error
-    } finally {
+    }
+    finally {
       this.isRefreshing = false
     }
   }
