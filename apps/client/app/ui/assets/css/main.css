@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "@nuxt/ui";
+@import "../../../../../../node_modules/.pnpm/tailwindcss@4.1.12/node_modules/tailwindcss/dist/lib.d.mts";
+@import "../../../../../../node_modules/.pnpm/@nuxt+ui@4.0.0-alpha.0_@babel+parser@7.28.3_@netlify+blobs@9.1.2_axios@1.11.0_change-ca_63ecef559f03e17123615a719c842f2e/node_modules/@nuxt/ui/dist/module.d.mts";
 
 @theme static {
   --font-sans: 'Public Sans', sans-serif;

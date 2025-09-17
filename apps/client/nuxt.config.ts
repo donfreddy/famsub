@@ -15,6 +15,8 @@ export default defineNuxtConfig({
     '/': { prerender: true }
   },
 
+  srcDir: 'app/ui',
+
   compatibilityDate: '2025-01-15',
 
   eslint: {

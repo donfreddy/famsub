@@ -40,6 +40,9 @@
       "maplibre-gl",
       "unrs-resolver",
       "vue-demi"
+    ],
+    "ignoredBuiltDependencies": [
+      "sharp"
     ]
   },
   "packageManager": "pnpm@10.13.1"

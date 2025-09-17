@@ -16,10 +16,6 @@ dev: ## Start all applications in development mode
 	@echo "🚀 Starting development servers..."
 	pnpm dev
 
-dev-web: ## Start only web application
-	@echo "🚀 Starting web app..."
-	pnpm dev --filter=web
-
 dev-marketing: ## Start only marketing application
 	@echo "🚀 Starting marketing app..."
 	pnpm dev --filter=marketing
@@ -40,9 +36,6 @@ dev-api: ## Start only API application
 build: ## Build all applications
 	@echo "🏗️  Building all applications..."
 	pnpm build
-
-build-web: ## Build only web application
-	turbo build --filter=web
 
 build-marketing: ## Build only marketing application
 	turbo build --filter=marketing
