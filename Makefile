@@ -1,4 +1,4 @@
-.PHONY: help install dev build test lint typecheck clean db db-seed db-stop feat-gen start
+.PHONY: help install dev build test lint typecheck clean db db-seed db-stop feat-gen start dev-marketing dev-client build-marketing build-client
 
 # Default target
 help: ## Show this help message
@@ -20,6 +20,14 @@ dev-web: ## Start only web application
 	@echo "🚀 Starting web app..."
 	pnpm dev --filter=web
 
+dev-marketing: ## Start only marketing application
+	@echo "🚀 Starting marketing app..."
+	pnpm dev --filter=marketing
+
+dev-client: ## Start only client application
+	@echo "🚀 Starting client app..."
+	pnpm dev --filter=client
+
 dev-admin: ## Start only admin application
 	@echo "🚀 Starting admin dashboard..."
 	pnpm dev --filter=admin
@@ -35,6 +43,12 @@ build: ## Build all applications
 
 build-web: ## Build only web application
 	turbo build --filter=web
+
+build-marketing: ## Build only marketing application
+	turbo build --filter=marketing
+
+build-client: ## Build only client application
+	turbo build --filter=client
 
 build-admin: ## Build only admin application
 	pnpm build --filter=admin
